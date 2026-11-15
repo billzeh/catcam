@@ -1,0 +1,35 @@
+# Private notes (real hostnames, IPs, usernames, HA details)
+*.private.md
+
+# Credentials and local config (MQTT username/password, HA tokens)
+.env
+*.env
+config.local.*
+secrets.*
+*.secret
+*.key
+*.pem
+
+# Home Assistant backups and keys, which must never be committed
+*.tar
+*backup*.tar
+*Encryption Key*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Captured images and video
+snapshots/
+*.jpg
+*.jpeg
+*.h264
+*.mp4
+
+# Editor / OS junk
+.vscode/
+*.swp
+Thumbs.db
+.DS_Store
