@@ -2,7 +2,7 @@
 
 A Raspberry Pi that watches the cats' food dish. When the PIR motion sensor triggers, it takes a snapshot and reports the visit to Home Assistant over MQTT.
 
-**Status: In progress. Pi and camera set up; PIR sensor wiring and MQTT script next.**
+**Status: In progress. Pi, camera and PIR working; MQTT script written, needs installing and testing.**
 
 ---
 
@@ -82,6 +82,28 @@ A Python script running as a systemd service on the Pi:
   - Possibly a sensor for the last visit's duration or time
 - **Warm-up:** ignore the PIR for about 60 s after boot (it gives false triggers while settling).
 - **Optional later:** live view via a streaming server (e.g. MediaMTX or go2rtc) added to Home Assistant as a generic camera.
+
+### Install
+
+Files are in `catcam/`. Copy them to `~/catcam/` on the Pi, then:
+
+```bash
+sudo apt install -y --no-install-recommends python3-picamera2 python3-paho-mqtt
+cd ~/catcam
+cp catcam.env.example catcam.env && chmod 600 catcam.env
+nano catcam.env                       # set MQTT_HOST, MQTT_USER, MQTT_PASSWORD
+
+# Test in the foreground first (Ctrl+C to stop)
+set -a; . ./catcam.env; set +a; python3 catcam.py
+
+# Then install the service (edit User/paths in catcam.service if your login differs)
+sudo cp catcam.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable --now catcam
+journalctl -u catcam -f
+```
+
+MQTT topics (prefix `catcam/`): `status` (online/offline), `visit` (ON/OFF), `snapshot` (JPEG), `last_visit` (JSON `start`, `duration_s`). All are retained.
 
 ### Home Assistant requirements
 - Home Assistant with the **Mosquitto broker** add-on (or any MQTT broker) and the **MQTT integration**

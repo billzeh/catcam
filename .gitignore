@@ -15,8 +15,9 @@ secrets.*
 *backup*.tar
 *Encryption Key*
 
-# Sliced printer files (printer-specific; regenerate from the STL)
+# Slicer project and sliced printer files (printer-specific; regenerate from the STL)
 *.ctb
+*.chitubox
 
 # Python
 __pycache__/

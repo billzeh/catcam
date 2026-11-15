@@ -1,0 +1,17 @@
+[Unit]
+Description=CatCam food dish monitor
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+# Change User and the paths if your Pi login isn't "bill".
+User=bill
+WorkingDirectory=/home/bill/catcam
+EnvironmentFile=/home/bill/catcam/catcam.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /home/bill/catcam/catcam.py
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
